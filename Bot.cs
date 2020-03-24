@@ -54,13 +54,22 @@ namespace Macado_bot
                 {
                     try
                     {
-                        string raw = await IO.Networking.MakeHttpRequestAsync("http://api.bilibili.com/x/relation/stat?vmid=490751924");
+                        string rawFollower = await IO.Networking.MakeHttpRequestAsync("http://api.bilibili.com/x/relation/stat?vmid=490751924");
                         
-                        Newtonsoft.Json.Linq.JObject jsonObj = Newtonsoft.Json.Linq.JObject.Parse(raw);
-                        string target = jsonObj["data"]["follower"].ToString();
-                        //var userDataObj = await Json.Parse<UserDataObj>(rawUserObj.message);
-                        //BotClient.SendTextMessageAsync(e.Message.Chat, raw);
-                        BotClient.SendTextMessageAsync(e.Message.Chat, $"当前玛卡豆关注数：{target}");
+                        Newtonsoft.Json.Linq.JObject jsonFollowerObj = Newtonsoft.Json.Linq.JObject.Parse(rawFollower);
+                        string strFollower = jsonFollowerObj["data"]["follower"].ToString();
+
+                        string rawSpace =
+                            await IO.Networking.MakeHttpRequestAsync(
+                                "https://api.bilibili.com/x/space/upstat?mid=490751924&jsonp=jsonp");
+                        Newtonsoft.Json.Linq.JObject jsonSpaceObj = Newtonsoft.Json.Linq.JObject.Parse(rawSpace);
+                        string strView = jsonSpaceObj["data"]["archive"]["view"].ToString();
+                        string strLikes = jsonSpaceObj["data"]["likes"].ToString();
+
+                        BotClient.SendTextMessageAsync(e.Message.Chat, $"👀 {strFollower}\n" +
+                                                                            $"▶️ {strView}\n" +
+                                                                            $"👍 {strLikes}");
+                        
 
                     }
                     catch (Exception exception)
