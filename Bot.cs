@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Macado_bot.IO;
 using Macado_bot.Utils;
 using Macado_bot.Misc;
 using Newtonsoft.Json;
@@ -28,10 +29,6 @@ namespace Macado_bot
 
         }
 
-        
-        
-        
-        
         static async void OnMessage(object sender, MessageEventArgs e) 
         {
             if (e.Message.Text != null)
@@ -40,11 +37,11 @@ namespace Macado_bot
                 Console.WriteLine($"Received a text message in chat {e.Message.Chat.Id}.");
                 if (e.Message.Text == "/uptime")                                            // TODO : Implement CmdProcessor to replace if blocks
                 {
-                    BotClient.SendTextMessageAsync(e.Message.Chat, $"Current uptime is {Vars.Uptime}");
+                    await BotClient.SendTextMessageAsync(e.Message.Chat, $"Current uptime is {Vars.Uptime}");
                 }
                 else if (e.Message.Text == "/start")
                 {
-                    BotClient.SendTextMessageAsync(e.Message.Chat, " ");
+                    await BotClient.SendTextMessageAsync(e.Message.Chat, " ");
                 }
                 else if (e.Message.Text == "/settings")
                 {
@@ -52,32 +49,8 @@ namespace Macado_bot
                 }
                 else if (e.Message.Text == "/info" || e.Message.Text == "/info@Macado_bot")
                 {
-                    try
-                    {
-                        string rawFollower = await IO.Networking.MakeHttpRequestAsync("http://api.bilibili.com/x/relation/stat?vmid=490751924");
-                        
-                        Newtonsoft.Json.Linq.JObject jsonFollowerObj = Newtonsoft.Json.Linq.JObject.Parse(rawFollower);
-                        string strFollower = jsonFollowerObj["data"]["follower"].ToString();
+                    await Networking.GetInfo(e.Message.Chat);
 
-                        string rawSpace =
-                            await IO.Networking.MakeHttpRequestAsync(
-                                "https://api.bilibili.com/x/space/upstat?mid=490751924&jsonp=jsonp");
-                        Newtonsoft.Json.Linq.JObject jsonSpaceObj = Newtonsoft.Json.Linq.JObject.Parse(rawSpace);
-                        string strView = jsonSpaceObj["data"]["archive"]["view"].ToString();
-                        string strLikes = jsonSpaceObj["data"]["likes"].ToString();
-
-                        BotClient.SendTextMessageAsync(e.Message.Chat, $"👀 {strFollower}\n" +
-                                                                            $"▶️ {strView}\n" +
-                                                                            $"👍 {strLikes}");
-                        
-
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception);
-                        throw;
-                    }
-                    
                 }
             }
         }
