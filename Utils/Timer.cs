@@ -15,7 +15,7 @@ namespace Macado_bot.Utils
             ChatId chatId;
             //chatId = -1001303334160;
             chatId = 288763391;
-            await Networking.GetInfo(chatId);
+            await Networking.GetUpInfo(chatId);
         }
         
         

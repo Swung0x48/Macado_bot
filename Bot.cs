@@ -31,10 +31,11 @@ namespace Macado_bot
 
         static async void OnMessage(object sender, MessageEventArgs e) 
         {
+            var botInstance = BotClient.GetMeAsync().Result; // Get the bot instance info.
             if (e.Message.Text != null)
             {
                 
-                Console.WriteLine($"Received a text message in chat {e.Message.Chat.Id}.");
+                Console.WriteLine($"Received a text message in chat {e.Message.Chat.Id}.\n");
                 if (e.Message.Text == "/uptime")                                            // TODO : Implement CmdProcessor to replace if blocks
                 {
                     await BotClient.SendTextMessageAsync(e.Message.Chat, $"Current uptime is {Vars.Uptime}");
@@ -47,11 +48,16 @@ namespace Macado_bot
                 {
                     
                 }
-                else if (e.Message.Text == "/info" || e.Message.Text == "/info@Macado_bot")
+                else if (e.Message.Text == "/info" || e.Message.Text == $"/info@{botInstance.Username}")
                 {
-                    await Networking.GetInfo(e.Message.Chat);
+                    await Networking.GetUpInfo(e.Message.Chat);
 
                 }
+                else if (e.Message.Text == "/getlatest" || e.Message.Text == $"/getlatest@{botInstance.Username}")
+                {
+                    await Networking.GetLatestVidInfo(e.Message.Chat);
+                }
+                
             }
         }
     }

@@ -26,11 +26,11 @@ namespace Macado_bot.IO
             } 
         }
 
-        public static async Task GetInfo(ChatId chatId, string uid = "490751924")
+        public static async Task GetUpInfo(ChatId chatId, string uid = "490751924")
         {
             try
             {
-                string rawFollower = await MakeHttpRequestAsync("http://api.bilibili.com/x/relation/stat?vmid=490751924");
+                string rawFollower = await MakeHttpRequestAsync($"http://api.bilibili.com/x/relation/stat?vmid={uid}");
                         
                 JObject jsonFollowerObj = JObject.Parse(rawFollower);
                 string strFollower = jsonFollowerObj["data"]["follower"].ToString();
@@ -57,17 +57,7 @@ namespace Macado_bot.IO
             Console.WriteLine($"Init: {Vars.Stopwatch.Elapsed.ToString()}");
             for (; ; pageNo ++)
             {
-                string rawSpace = await Networking.MakeHttpRequestAsync(
-                    $"https://api.bilibili.com/x/space/arc/search?mid={mid}&" +
-                    $"ps={pageSize}&" +
-                    $"tid=0&" +
-                    $"pn={pageNo}&" +
-                    $"keyword=&order=pubdate&jsonp=jsonp");
-                //Console.WriteLine(rawVideo);
-                JObject jsonSpaceObj = JObject.Parse(rawSpace);
-                IList<JToken> vlist = jsonSpaceObj["data"]["list"]["vlist"].Children().ToList();
-                
-                Console.WriteLine($"getSpaceInfo: {Vars.Stopwatch.Elapsed.ToString()}");
+                var vlist = await GetSpacePage(100, pageNo);
                 
                 if (vlist.Count == 0) break;
                 
@@ -112,7 +102,7 @@ namespace Macado_bot.IO
             Console.WriteLine();
             Console.WriteLine($"After crawling: {Vars.Stopwatch.Elapsed.ToString()}");
             Console.WriteLine();
-            ////////////////////////////    End of Viewer counter.    ////////////////////////////
+            /////////////////////////////////////////    End of viewer counter     /////////////////////////////////////
 
 
                 //Console.WriteLine(videoArray.ToString());
@@ -132,6 +122,32 @@ namespace Macado_bot.IO
             {
                 Console.WriteLine(exception);
                 throw;
+            }
+        }
+        
+        public static async Task<IList<JToken>> GetSpacePage(int pageSize, int pageNo, string mid = "490751924")
+        {
+            var rawSpace = await Networking.MakeHttpRequestAsync(
+                $"https://api.bilibili.com/x/space/arc/search?mid={mid}&" +
+                $"ps={pageSize}&" +
+                $"tid=0&" +
+                $"pn={pageNo}&" +
+                $"keyword=&order=pubdate&jsonp=jsonp");
+            //Console.WriteLine(rawVideo);
+            var jsonSpaceObj = JObject.Parse(rawSpace);
+            return jsonSpaceObj["data"]["list"]["vlist"].Children().ToList();
+        }
+
+        public static async Task GetLatestVidInfo(ChatId chatId, string uid = "490751924")
+        {
+            var vlist = await GetSpacePage(1, 1);
+
+            foreach (var v in vlist)
+            {
+                //Console.WriteLine(t.ToString());
+                await Bot.BotClient.SendTextMessageAsync(chatId,$"{v["author"]}的最新视频：\n" +
+                                                                $"{v["title"]}\n" +
+                                                                $"https://www.bilibili.com/video/{v["bvid"]}");
             }
         }
 
