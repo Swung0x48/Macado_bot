@@ -28,10 +28,10 @@ namespace Macado_bot
             
             await IO.File.WriteConf(Vars.ConfFile, Vars.CurrentConf);
             Console.WriteLine("Now is {0:h:mm:ss.fff}", DateTime.Now);
-            DateTime dateTime = new DateTime(2020,3, 24, 12, 25, 00);
-            Console.WriteLine("Timer set to : {0:h:mm:ss.fff}", dateTime);
-            Console.WriteLine("Setting up timer.");
-            Utils.Timer.ScheduledTask(dateTime.TimeOfDay);
+            // DateTime dateTime = new DateTime(2020,3, 24, 12, 25, 00);
+            // Console.WriteLine("Timer set to : {0:h:mm:ss.fff}", dateTime);
+            // Console.WriteLine("Setting up timer.");
+            // Utils.Timer.ScheduledTask(dateTime.TimeOfDay);
 
             Console.WriteLine(Language.MsgBotInit);
             await Bot.Init(Vars.CurrentConf.Apikey);                               // Initialize bot.

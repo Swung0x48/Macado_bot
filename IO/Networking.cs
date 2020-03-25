@@ -30,59 +30,100 @@ namespace Macado_bot.IO
         {
             try
             {
-                string rawFollower = await IO.Networking.MakeHttpRequestAsync("http://api.bilibili.com/x/relation/stat?vmid=490751924");
+                string rawFollower = await MakeHttpRequestAsync("http://api.bilibili.com/x/relation/stat?vmid=490751924");
                         
-                Newtonsoft.Json.Linq.JObject jsonFollowerObj = Newtonsoft.Json.Linq.JObject.Parse(rawFollower);
+                JObject jsonFollowerObj = JObject.Parse(rawFollower);
                 string strFollower = jsonFollowerObj["data"]["follower"].ToString();
 
-                string rawSpace =
-                    await IO.Networking.MakeHttpRequestAsync(
+                string rawUpStat =
+                    await MakeHttpRequestAsync(
                         $"https://api.bilibili.com/x/space/upstat?mid={uid}&jsonp=jsonp");
-                Newtonsoft.Json.Linq.JObject jsonSpaceObj = Newtonsoft.Json.Linq.JObject.Parse(rawSpace);
+                JObject rawUpStatObj = JObject.Parse(rawUpStat);
                 // string strView = jsonSpaceObj["data"]["archive"]["view"].ToString();
-                string strLikes = jsonSpaceObj["data"]["likes"].ToString();
+                string strLikes = rawUpStatObj["data"]["likes"].ToString();
                 
                 // TODO : Refactor viewer counter.
-                ////////////////////////////    Viewer counter. To be refactored.    ////////////////////////////
-                int playCount = 0;
+           ////////////////////////////////    Viewer counter. To be refactored.    ////////////////////////////
+                
+            var playCount = 0;
+            var coinCount = 0;
+            var favCount = 0;
+            var shareCount = 0;
 
-                int pageSize = 100;
-                for (int pageNo = 1; ; pageNo ++)
+            var mid = 490751924;
+            var pageSize = 20;
+            var pageNo = 1;
+            
+            Console.WriteLine($"Init: {Vars.Stopwatch.Elapsed.ToString()}");
+            for (; ; pageNo ++)
+            {
+                string rawSpace = await Networking.MakeHttpRequestAsync(
+                    $"https://api.bilibili.com/x/space/arc/search?mid={mid}&" +
+                    $"ps={pageSize}&" +
+                    $"tid=0&" +
+                    $"pn={pageNo}&" +
+                    $"keyword=&order=pubdate&jsonp=jsonp");
+                //Console.WriteLine(rawVideo);
+                JObject jsonSpaceObj = JObject.Parse(rawSpace);
+                IList<JToken> vlist = jsonSpaceObj["data"]["list"]["vlist"].Children().ToList();
+                
+                Console.WriteLine($"getSpaceInfo: {Vars.Stopwatch.Elapsed.ToString()}");
+                
+                if (vlist.Count == 0) break;
+                
+                foreach (var t in vlist)
                 {
-                    string rawVideo = await Networking.MakeHttpRequestAsync(
-                        $"https://api.bilibili.com/x/space/arc/search?mid=490751924&" +
-                        $"ps={pageSize}&" +
-                        $"tid=0&" +
-                        $"pn={pageNo}&" +
-                        $"keyword=&order=pubdate&jsonp=jsonp");
-                    // Console.WriteLine(rawVideo);
-                    JObject jsonVideoObj = JObject.Parse(rawVideo);
-                    IList<JToken> videoArray = jsonVideoObj["data"]["list"]["vlist"].Children().ToList();
-                
-                    if (videoArray.Count == 0) break;
-                
-                    for (int j = 0; j < videoArray.Count; j ++)
+                    try
                     {
+                        playCount += int.Parse(t["play"].ToString());            // play counter
+                        string bvid = t["bvid"].ToString();
                         try
                         {
-                            playCount += int.Parse(videoArray[j]["play"].ToString());
+                            string rawVideo = await Networking.MakeHttpRequestAsync(
+                                $"https://api.bilibili.com/x/web-interface/view?bvid={bvid}");
+                            JObject jsonVideoObj = JObject.Parse(rawVideo);
+                            // Console.WriteLine(jsonVideoObj["data"]["stat"]["coin"].ToString());
+                            coinCount += int.Parse(jsonVideoObj["data"]["stat"]["coin"].ToString()); // coin counter
+                            favCount += int.Parse(jsonVideoObj["data"]["stat"]["favorite"].ToString());    // favourite counter.
+                            shareCount += int.Parse(jsonVideoObj["data"]["stat"]["share"].ToString()); // share counter.
                         }
-                        catch (Exception e)
+                        catch (HttpRequestException e)
                         {
                             Console.WriteLine(e);
                             throw;
                         }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
                     }
                 }
-                ////////////////////////////    End of Viewer counter.    ////////////////////////////
+            }
+
+
+            //Console.WriteLine(videoArray.ToString());
+            Console.WriteLine($"pageNo: {pageNo}");
+            Console.WriteLine($"playCount: {playCount}");
+            Console.WriteLine($"coinCount: {coinCount}");
+            Console.WriteLine($"favCount: {favCount}");
+            Console.WriteLine($"shareCount: {shareCount}");
+            Console.WriteLine();
+            Console.WriteLine($"After crawling: {Vars.Stopwatch.Elapsed.ToString()}");
+            Console.WriteLine();
+            ////////////////////////////    End of Viewer counter.    ////////////////////////////
 
 
                 //Console.WriteLine(videoArray.ToString());
                 // Console.WriteLine(playCount);
                 
-                await Bot.BotClient.SendTextMessageAsync(chatId, $"👀 {strFollower}\n" +
-                                                               $"▶️ {playCount}\n" +
-                                                               $"👍 {strLikes}");
+                await Bot.BotClient.SendTextMessageAsync(chatId, $"👀 关注： {strFollower}\n" +
+                                                               $"▶️ 播放： {playCount}\n" +
+                                                               $"👍 点赞： {strLikes}\n" +
+                                                               $"💰 投币： {coinCount}\n" +
+                                                               $"🌟 收藏： {favCount}\n" +
+                                                               $"↪️ 转发： {shareCount}\n");
                 
                         
 
