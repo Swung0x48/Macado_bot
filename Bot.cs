@@ -24,7 +24,9 @@ namespace Macado_bot
 
             while (true)                                                                    
             {
-                Thread.Sleep(int.MaxValue);                                // Keeping the whole thing running.
+                //Thread.Sleep(int.MaxValue);
+                Console.ReadKey();                                                     // Keeping the whole thing running.
+
             }
 
         }
