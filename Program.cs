@@ -25,6 +25,7 @@ namespace Macado_bot
             Console.WriteLine(Language.MsgReadConf);                                
             Vars.CurrentConf = await IO.File.ReadConf<ConfObj>(Vars.ConfFile);      // Read from conf file.
             
+            var cts = new CancellationTokenSource();
             
             await IO.File.WriteConf(Vars.ConfFile, Vars.CurrentConf);
             Console.WriteLine("Now is {0:h:mm:ss.fff}", DateTime.Now);
@@ -34,7 +35,7 @@ namespace Macado_bot
             // Utils.Timer.ScheduledTask(dateTime.TimeOfDay);
 
             Console.WriteLine(Language.MsgBotInit);
-            await Bot.Init(Vars.CurrentConf.Apikey);                               // Initialize bot.
+            await Bot.Init(Vars.CurrentConf.Apikey, cts);                               // Initialize bot.
             //Console.WriteLine("{0:h:mm:ss.fff} Setting up timer.\n", DateTime.Now);
             
             

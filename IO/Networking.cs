@@ -25,8 +25,7 @@ namespace Macado_bot.IO
                 return $"Error :{e.Message} ";
             } 
         }
-
-        public static async Task GetUpInfo(ChatId chatId, string uid = "490751924")
+public static async Task GetUpInfo(ChatId chatId, string uid = "490751924")
         {
             try
             {
@@ -124,6 +123,7 @@ namespace Macado_bot.IO
                 throw;
             }
         }
+        
         
         public static async Task<IList<JToken>> GetSpacePage(int pageSize, int pageNo, string mid = "490751924")
         {

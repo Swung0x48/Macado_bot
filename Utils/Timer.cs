@@ -13,9 +13,8 @@ namespace Macado_bot.Utils
         {
             await Task.Delay((int)timeToExecute.Subtract(DateTime.Now.TimeOfDay).TotalMilliseconds);
             ChatId chatId;
-            //chatId = -1001303334160;
-            chatId = 288763391;
-            await Networking.GetUpInfo(chatId);
+            
+            //await Networking.GetUpInfo(chatId);
         }
         
         

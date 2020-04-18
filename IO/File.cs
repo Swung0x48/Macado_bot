@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Macado_bot.Utils;
+using Newtonsoft.Json;
 
 namespace Macado_bot.IO
 {
@@ -13,7 +14,7 @@ namespace Macado_bot.IO
             {
                 await System.IO.File.WriteAllTextAsync(
                     filename, 
-                    await Json.Serialize(obj)
+                    JsonConvert.SerializeObject(obj, Formatting.Indented)
                 );
             }
             catch (Exception e)
@@ -29,7 +30,7 @@ namespace Macado_bot.IO
             {
                 Console.WriteLine("Auto saving configuration file...");
             }
-            return await Json.Parse<T>(
+            return JsonConvert.DeserializeObject<T>(
                 await System.IO.File.ReadAllTextAsync(
                     filename, 
                     Encoding.UTF8
