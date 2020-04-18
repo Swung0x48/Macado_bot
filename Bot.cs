@@ -36,7 +36,6 @@ namespace Macado_bot
 
         }
 
-        //static async void OnMessage(object sender, MessageEventArgs e) // TODO : delete this
         static async void OnUpdate(object sender, UpdateEventArgs e) 
         {
             var botInstance = BotClient.GetMeAsync().Result; // Get the bot instance info.
@@ -53,36 +52,6 @@ namespace Macado_bot
             {
                 await UserLogic(update).ConfigureAwait(false);
             }
-            
-            
-            
-            // if (e.Message.Text != null)    // TODO : delete this
-            // {
-            //     
-            //     Console.WriteLine($"Received a text message in chat {e.Message.Chat.Id}.\n");
-            //     if (e.Message.Text == "/uptime")                                            // TODO : Implement CmdProcessor to replace if blocks
-            //     {
-            //         await BotClient.SendTextMessageAsync(e.Message.Chat, $"Current uptime is {Vars.Uptime}");
-            //     }
-            //     else if (e.Message.Text == "/start")
-            //     {
-            //         await BotClient.SendTextMessageAsync(e.Message.Chat, " ");
-            //     }
-            //     else if (e.Message.Text == "/settings")
-            //     {
-            //         
-            //     }
-            //     else if (e.Message.Text == "/info" || e.Message.Text == $"/info@{botInstance.Username}")
-            //     {
-            //         await Networking.GetUpInfo(e.Message.Chat);
-            //
-            //     }
-            //     else if (e.Message.Text == "/getlatest" || e.Message.Text == $"/getlatest@{botInstance.Username}")
-            //     {
-            //         await Networking.GetLatestVidInfo(e.Message.Chat);
-            //     }
-            //     
-            // }
         }
 
         private static async Task UserLogic(Update update)
