@@ -49,7 +49,7 @@ namespace Macado_bot.Utils.Commands.Implemented
                 Console.WriteLine($"Init: {Vars.Stopwatch.Elapsed.ToString()}");
                 for (;; pageNo++)
                 {
-                    var vlist = await Networking.GetSpacePage(100, pageNo);
+                    var vlist = await Bilibili.GetSpacePage(100, pageNo);
 
                     if (vlist.Count == 0) break;
 
