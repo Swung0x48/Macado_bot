@@ -21,7 +21,6 @@ namespace Macado_bot
             var botInstance = BotClient.GetMeAsync().Result; // Get the bot instance info.
             Console.WriteLine($"ID: {botInstance.Id} \nName: {botInstance.FirstName}."); // Survival confirmation.
             BotClient.OnUpdate += OnUpdate;                                        // Add OnMessage() to bot Client's OnMessage listener
-            // TODO : delete above
             BotClient.StartReceiving(
                 new[] { UpdateType.Message },
                     cts.Token
