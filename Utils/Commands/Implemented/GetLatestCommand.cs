@@ -7,7 +7,7 @@ namespace Macado_bot.Utils.Commands.Implemented
 {
     public class GetLatestCommand : ICommand
     {
-        public string CmdLiteral => "getlastest";
+        public string CmdLiteral => "getlatest";
         public string Argv { get; }
 
         public async Task<bool> ExecuteAsync(TelegramBotClient botClient, Update update)

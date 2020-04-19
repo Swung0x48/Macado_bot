@@ -61,7 +61,7 @@ namespace Macado_bot
 
         private static async Task OwnerLogic(Update update)
         {
-            throw new NotImplementedException();            // TODO : Implement this.
+            throw new NotImplementedException();            // TODO : Route /uptime command here.
         }
     }
 }

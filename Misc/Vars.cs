@@ -1,11 +1,6 @@
-using System;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 using System.Reflection;
-using System.Threading;
-using Macado_bot.Utils.Commands;
-using Telegram.Bot;
 
 namespace Macado_bot.Misc
 {
