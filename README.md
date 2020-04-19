@@ -1,5 +1,7 @@
-# 玛卡豆波特
+# Macado Bot
 
-用于监控玛卡豆的b站订阅人数等信息。
+Chinese Simplified(zh-CN) version [here](https://github.com/Swung0x48/Macado_bot/blob/master/README_zh-CN.md).
 
-README正在施工中...
+A telegram bot to monitor info of bilibili up'er.
+
+README's working in progress...
