@@ -9,6 +9,7 @@ namespace Macado_bot.Utils.Commands.Implemented
     {
         public string CmdLiteral => "getlatest";
         public string Argv { get; }
+        public int Permission => 1;
 
         public async Task<bool> ExecuteAsync(TelegramBotClient botClient, Update update)
         {
@@ -18,7 +19,7 @@ namespace Macado_bot.Utils.Commands.Implemented
             foreach (var v in vlist)
             {
                 //Console.WriteLine(t.ToString());
-                await Bot.BotClient.SendTextMessageAsync(
+                await botClient.SendTextMessageAsync(
                     chatId,
                     $"{v["author"]}的最新视频：\n" +
                     $"{v["title"]}\n" +

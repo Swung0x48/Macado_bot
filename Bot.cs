@@ -55,13 +55,14 @@ namespace Macado_bot
 
         private static async Task UserLogic(Update update)
         {
-            if (await CommandInstance.CommandManager.Execute(Bot.BotClient, update))
+            if (await CommandInstance.CommandManager.Execute(BotClient, update)) // TODO : Dock with permission system
                 return;
         }
 
         private static async Task OwnerLogic(Update update)
         {
-            throw new NotImplementedException();            // TODO : Route /uptime command here.
+            if (await CommandInstance.CommandManager.Execute(BotClient, update))
+                return;
         }
     }
 }

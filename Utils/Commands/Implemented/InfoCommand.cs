@@ -15,6 +15,7 @@ namespace Macado_bot.Utils.Commands.Implemented
         public string CmdLiteral => "info";
 
         public string Argv { get; }
+        public int Permission => 1;
 
         public async Task<bool> ExecuteAsync(TelegramBotClient botClient, Update update)
         {
@@ -102,7 +103,7 @@ namespace Macado_bot.Utils.Commands.Implemented
                 //Console.WriteLine(videoArray.ToString());
                 // Console.WriteLine(playCount);
 
-                await Bot.BotClient.SendTextMessageAsync(chatId, $"👀 关注： {strFollower}\n" +
+                await botClient.SendTextMessageAsync(chatId, $"👀 关注： {strFollower}\n" +
                                                                  $"▶️ 播放： {playCount}\n" +
                                                                  $"👍 点赞： {strLikes}\n" +
                                                                  $"💰 投币： {coinCount}\n" +

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Macado_bot.Misc;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -24,17 +25,18 @@ namespace Macado_bot.Utils.Commands
         
         public async Task<bool> Execute(TelegramBotClient botClient, Update update)
         {
+            var hasGrantedAccess = update.Message.From.Id == Vars.CurrentConf.OwnerUID;  // TODO : Implement permission system
+            
             if (!Preprocessor.IsCommand(update.Message.Text)) return false;
             
             var incomingCmd = new Preprocessor(update.Message.Text);
-            //incomingCmd.GetCommand()
             foreach (var i in _cmdStorages)
             {
                 if (incomingCmd.GetCommand() == i.CmdLiteral)
                 {
                     try
                     {
-                        _ = await i.ExecuteAsync(Bot.BotClient, update).ConfigureAwait(false);
+                        _ = await i.ExecuteAsync(botClient, update).ConfigureAwait(false);
                     }
                     catch (Exception ex)
                     {
@@ -43,10 +45,11 @@ namespace Macado_bot.Utils.Commands
                     }
                 }
             }
-            
 
             return true;
         }
+
+        
 
     }
 }

@@ -10,10 +10,14 @@ namespace Macado_bot.Utils.Commands.Implemented
     {
         public string CmdLiteral => "uptime";
         public string Argv { get; }
+        public int Permission => 0;
 
         public async Task<bool> ExecuteAsync(TelegramBotClient botClient, Update update)
         {
-            await Bot.BotClient.SendTextMessageAsync(update.Message.Chat, $"Current uptime is {Vars.Uptime}");
+            await Bot.BotClient.SendTextMessageAsync(
+                update.Message.Chat, 
+                $"Current uptime is {Vars.Uptime}"
+                );
             
             return true;
         }
