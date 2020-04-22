@@ -43,26 +43,11 @@ namespace Macado_bot
             if (update.Message.From.IsBot) return;
             // if (update.Message.Chat.Type != ChatType.Private) return;
 
-            if (update.Message.From.Id == Vars.CurrentConf.OwnerUID)
-            {
-                await OwnerLogic(update).ConfigureAwait(false);
-            }
-            else
-            {
-                await UserLogic(update).ConfigureAwait(false);
-            }
-        }
-
-        private static async Task UserLogic(Update update)
-        {
-            if (await CommandInstance.CommandManager.Execute(BotClient, update)) // TODO : Dock with permission system
+            var accessLevel = CommandRouter.CheckAccessLevel(update, Vars.CurrentConf.OwnerUID);
+            if (await CommandInstance.CommandManager.Execute(BotClient, update, accessLevel)) // Docking with permission system
                 return;
         }
 
-        private static async Task OwnerLogic(Update update)
-        {
-            if (await CommandInstance.CommandManager.Execute(BotClient, update))
-                return;
-        }
+        
     }
 }

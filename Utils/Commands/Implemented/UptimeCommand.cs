@@ -10,7 +10,7 @@ namespace Macado_bot.Utils.Commands.Implemented
     {
         public string CmdLiteral => "uptime";
         public string Argv { get; }
-        public int Permission => 0;
+        public int AccessLevelReq => 1;
 
         public async Task<bool> ExecuteAsync(TelegramBotClient botClient, Update update)
         {

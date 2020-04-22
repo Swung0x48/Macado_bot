@@ -20,13 +20,12 @@ namespace Macado_bot.Utils.Commands
 
             _cmdStorages.Add(command);
         }
+
+        public static int CheckAccessLevel(Update update, int ownerUid)
+            => (update.Message.From.Id == ownerUid) ? 1 : 0;
         
-        
-        
-        public async Task<bool> Execute(TelegramBotClient botClient, Update update)
+        public async Task<bool> Execute(TelegramBotClient botClient, Update update, int accessLevel)
         {
-            var hasGrantedAccess = update.Message.From.Id == Vars.CurrentConf.OwnerUID;  // TODO : Implement permission system
-            
             if (!Preprocessor.IsCommand(update.Message.Text)) return false;
             
             var incomingCmd = new Preprocessor(update.Message.Text);
@@ -34,22 +33,30 @@ namespace Macado_bot.Utils.Commands
             {
                 if (incomingCmd.GetCommand() == i.CmdLiteral)
                 {
-                    try
+                    if (accessLevel >= i.AccessLevelReq)
                     {
-                        _ = await i.ExecuteAsync(botClient, update).ConfigureAwait(false);
+                        try
+                        {
+                            _ = await i.ExecuteAsync(botClient, update)
+                                .ConfigureAwait(false);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Exception while executing commandline: {ex}");
+                            Environment.Exit(1);
+                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Console.WriteLine($"Exception while executing commandline: {ex}");
-                        Environment.Exit(1);
+                        _ = await botClient.SendTextMessageAsync(
+                            update.Message.From.Id,
+                            "⛔️ Access Denied."
+                            )
+                            .ConfigureAwait(false);
                     }
                 }
             }
-
             return true;
         }
-
-        
-
     }
 }

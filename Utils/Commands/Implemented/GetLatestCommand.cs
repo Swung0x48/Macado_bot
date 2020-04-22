@@ -9,7 +9,7 @@ namespace Macado_bot.Utils.Commands.Implemented
     {
         public string CmdLiteral => "getlatest";
         public string Argv { get; }
-        public int Permission => 1;
+        public int AccessLevelReq => 0;
 
         public async Task<bool> ExecuteAsync(TelegramBotClient botClient, Update update)
         {
