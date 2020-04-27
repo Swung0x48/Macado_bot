@@ -1,5 +1,3 @@
-
-
 namespace Macado_bot.Misc
 {
     public static class Language
@@ -17,7 +15,5 @@ namespace Macado_bot.Misc
         public static string MsgFirstBoot { get => Msg_FirstBoot; set => lang = value; }
         public static string MsgReadConf { get => Msg_ReadConf; set => lang = value; }
         public static string MsgBotInit { get => Msg_BotInit; set => lang = value; }
-        
-        
     }
 }
