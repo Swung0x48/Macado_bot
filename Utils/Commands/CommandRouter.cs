@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Macado_bot.Misc;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 

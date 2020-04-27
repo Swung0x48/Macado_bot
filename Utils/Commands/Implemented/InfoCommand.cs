@@ -86,8 +86,7 @@ namespace Macado_bot.Utils.Commands.Implemented
                         }
                     }
                 }
-
-
+                
                 //Console.WriteLine(videoArray.ToString());
                 Console.WriteLine($"pageNo: {pageNo}");
                 Console.WriteLine($"playCount: {playCount}");
@@ -98,8 +97,7 @@ namespace Macado_bot.Utils.Commands.Implemented
                 Console.WriteLine($"After crawling: {Vars.Stopwatch.Elapsed.ToString()}");
                 Console.WriteLine();
                 /////////////////////////////////////////    End of viewer counter     /////////////////////////////////////
-
-
+                
                 //Console.WriteLine(videoArray.ToString());
                 // Console.WriteLine(playCount);
 
@@ -118,7 +116,6 @@ namespace Macado_bot.Utils.Commands.Implemented
                 Console.WriteLine(exception);
                 throw;
             }
-
             return true;
         }
     }

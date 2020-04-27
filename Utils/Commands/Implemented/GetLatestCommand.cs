@@ -25,9 +25,7 @@ namespace Macado_bot.Utils.Commands.Implemented
                     $"{v["title"]}\n" +
                     $"https://www.bilibili.com/video/{v["bvid"]}"
                 );
-
             }
-
             return true;
         }
     }

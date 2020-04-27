@@ -31,7 +31,6 @@ namespace Macado_bot
             Console.WriteLine(Language.MsgBotInit);
             var cts = new CancellationTokenSource();
             await Bot.Init(Vars.CurrentConf.Apikey, cts);                               // Initialize bot.
-
         }
     }
 }

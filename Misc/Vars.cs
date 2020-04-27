@@ -17,7 +17,6 @@ namespace Macado_bot.Misc
 
         public static ConfObj CurrentConf = new ConfObj();
         
-        
         public static string Uptime
         {
             get => Stopwatch.Elapsed.ToString();

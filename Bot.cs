@@ -30,9 +30,7 @@ namespace Macado_bot
             {
                 //Thread.Sleep(int.MaxValue);
                 Console.ReadKey();                                                     // Keeping the whole thing running.
-
             }
-
         }
 
         static async void OnUpdate(object sender, UpdateEventArgs e) 
@@ -47,7 +45,5 @@ namespace Macado_bot
             if (await CommandInstance.CommandManager.Execute(BotClient, update, accessLevel)) // Docking with permission system
                 return;
         }
-
-        
     }
 }
