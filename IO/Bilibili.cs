@@ -12,6 +12,15 @@ namespace Macado_bot.IO
         public int CoinCount = 0;
         public int FavCount = 0;
         public int ShareCount = 0;
+
+        public async Task<BilibiliStat> Create()
+        {
+            return new BilibiliStat();
+        }
+        private BilibiliStat()
+        {
+            
+        }
     }
     
     public class Bilibili

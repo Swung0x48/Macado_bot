@@ -34,13 +34,14 @@ namespace Macado_bot.Utils.Commands.Implemented
                         $"https://api.bilibili.com/x/space/upstat?mid={uid}&jsonp=jsonp");
                 JObject rawUpStatObj = JObject.Parse(rawUpStat);
                 // string strView = jsonSpaceObj["data"]["archive"]["view"].ToString();
-                string strLikes = rawUpStatObj["data"]["likes"].ToString();
+                // string strLikes = rawUpStatObj["data"]?["likes"]?.ToString();
 
                 // TODO : Refactor viewer counter.
                 ////////////////////////////////    Viewer counter. To be refactored.    ////////////////////////////
 
                 var playCount = 0;
                 var coinCount = 0;
+                var likeCount = 0;
                 var favCount = 0;
                 var shareCount = 0;
 
@@ -67,6 +68,7 @@ namespace Macado_bot.Utils.Commands.Implemented
                                 JObject jsonVideoObj = JObject.Parse(rawVideo);
                                 // Console.WriteLine(jsonVideoObj["data"]["stat"]["coin"].ToString());
                                 coinCount += int.Parse(jsonVideoObj["data"]["stat"]["coin"].ToString()); // coin counter
+                                likeCount += int.Parse(jsonVideoObj["data"]["stat"]["like"].ToString()); // coin counter
                                 favCount += int.Parse(jsonVideoObj["data"]["stat"]["favorite"]
                                     .ToString()); // favourite counter.
                                 shareCount +=
@@ -90,6 +92,7 @@ namespace Macado_bot.Utils.Commands.Implemented
                 //Console.WriteLine(videoArray.ToString());
                 Console.WriteLine($"pageNo: {pageNo}");
                 Console.WriteLine($"playCount: {playCount}");
+                Console.WriteLine($"likeCount: {likeCount}");
                 Console.WriteLine($"coinCount: {coinCount}");
                 Console.WriteLine($"favCount: {favCount}");
                 Console.WriteLine($"shareCount: {shareCount}");
@@ -103,7 +106,7 @@ namespace Macado_bot.Utils.Commands.Implemented
 
                 await botClient.SendTextMessageAsync(chatId, $"👀 关注： {strFollower}\n" +
                                                                  $"▶️ 播放： {playCount}\n" +
-                                                                 $"👍 点赞： {strLikes}\n" +
+                                                                 $"👍 点赞： {likeCount}\n" +
                                                                  $"💰 投币： {coinCount}\n" +
                                                                  $"🌟 收藏： {favCount}\n" +
                                                                  $"↪️ 转发： {shareCount}\n");
